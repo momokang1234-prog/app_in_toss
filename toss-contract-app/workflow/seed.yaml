@@ -1,0 +1,66 @@
+goal: "토스 인증(원터치 본인인증) 기반 근로계약 미니앱을 React Native(WebView) 방식으로 개발. 앱인토스 플랫폼에서 3천만 토스 유저가 근로계약서를 작성하고 전자서명할 수 있는 풀스택 미니앱 구현"
+
+task_type: "code"
+
+constraints:
+  - "앱인토스 SDK 2.x 사용 (1.x 업로드 불가)"
+  - "토스 로그인만 허용 (자사 로그인 불가)"
+  - "mTLS 인증서 필수 (서버 간 통신)"
+  - "React 18 + Vite + TypeScript 기반 WebView 미니앱"
+  - "TDS(Toss Design System) 컴포넌트 사용"
+  - "granite.config.ts에 appName 등록 필요"
+  - "원터치 본인 인증 방식 우선 (이탈 최소화)"
+  - "개인정보 암호화 필수 (TossCertSessionGenerator)"
+  - "앱인토스 콘솔 등록 선행 필요"
+  - "자사 앱 설치 유도 금지, 외부 링크 이동 제한"
+
+acceptance_criteria:
+  - "토스 인증 AccessToken 발급 API 연동 (OAuth2 client_credentials)"
+  - "원터치 본인 인증 플로우 구현 (토스 앱 호출 → CI/이름 수신)"
+  - "근로계약서 작성 폼 화면 구현 (사업장명/직무/입사일/급여/근무시간/근무요일)"
+  - "계약서 제출 및 전자서명 요청 플로우"
+  - "계약 완료 확인 화면"
+  - "TDS 컴포넌트 기반 UI (버튼/입력폼/레이아웃)"
+  - "granite.config.ts 올바른 설정 (appName/displayName/primaryColor)"
+  - "Vite dev 서버 실행 가능 (포트 5173)"
+  - "TypeScript 컴파일 에러 없음"
+  - "반응형 모바일 레이아웃 (max-width 480px)"
+  - "에러 처리 및 로딩 상태 UI"
+  - "서버 사이드 API 엔드포인트 설계 (AccessToken 발급/인증 요청/결과 조회)"
+
+ontology_schema:
+  name: "toss-contract-app"
+  description: "토스 인증 기반 근로계약 미니앱 온톨로지"
+  concepts:
+    - name: "TossAuth"
+      description: "토스 인증 서비스 - 원터치 본인인증, CI 발급"
+    - name: "ContractForm"
+      description: "근로계약서 작성 폼 - 사업장/직무/급여/근무조건"
+    - name: "AccessToken"
+      description: "OAuth2 client_credentials 기반 API 인증 토큰"
+    - name: "TossCertSession"
+      description: "개인정보 암호화 세션키 생성/관리"
+    - name: "MiniApp"
+      description: "앱인토스 WebView 미니앱 구조"
+    - name: "TDS"
+      description: "토스 디자인 시스템 컴포넌트"
+  relationships:
+    - name: "authenticates"
+      description: "MiniApp -> TossAuth (사용자 본인인증)"
+    - name: "encrypts_with"
+      description: "TossAuth -> TossCertSession (개인정보 암호화)"
+    - name: "renders_with"
+      description: "ContractForm -> TDS (UI 컴포넌트)"
+
+metadata:
+  author: "ganghyeon-ug"
+  tags: ["toss", "contract", "authentication", "miniapp", "react-native", "webview"]
+  version: "0.1.0"
+
+working_directory: "/Users/ganghyeon-ug/Desktop/💼 프로젝트/AI_Agents/TOSS/toss-contract-app"
+
+non_goals:
+  - "게임 미니앱 개발"
+  - "인앱 결제/광고 연동"
+  - "다른 간편로그인 방식 지원"
+  - "네이티브 React Native 앱 개발 (WebView 방식 사용)"
